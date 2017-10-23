@@ -13,7 +13,7 @@ import pymysql
 conn = pymysql.connect(
     db='example',
     user='root',
-    passwd='***REMOVED***',
+    passwd='bridge21power',
     host='localhost')
 c = conn.cursor()
 
