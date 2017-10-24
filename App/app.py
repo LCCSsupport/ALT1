@@ -3,8 +3,8 @@ import pymysql
 import config
 conn = pymysql.connect(
     db='example',
-    user='config.username',
-    passwd='config.password',
+    user=config.username,
+    passwd=config.password,
     host='localhost',
     autocommit=True) # important or add conn.commit() after query
 c = conn.cursor()
@@ -22,7 +22,7 @@ def display():
     
 @app.route('/postAnswer', methods=['POST'])
 def postAnswer():
-	question =  request.form['question-1'];
+	question =  request.form['question'];
 	text = request.form['text'];
 	answer = request.form['answer'];
 	response = {'status':'OK','question':question,'text':text,'answer':answer};
