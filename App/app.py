@@ -1,6 +1,8 @@
-from flask import Flask, render_template, request, json
+from flask import Flask, jsonify, render_template, request, json
 import pymysql
 import config
+import collections
+
 conn = pymysql.connect(
     db='example',
     user=config.username,
@@ -29,15 +31,22 @@ def postAnswer():
 	c.execute("INSERT INTO questions (question, text, answer) VALUES ('%s', '%s', '%s');" %(question, text, answer))
 	return json.dumps(response), 200, {'content-type': 'application/json'}
 	  
-@app.route('/displayResults') 
+@app.route('/displayResults')
 def displayResults():
     return render_template('displayResults.html')
     
 @app.route('/getData', methods=['GET'])
 def getData():
-	c.execute("SELECT answer FROM questions WHERE question='question-1'")
-	answers = c.fetchall()
-	return json.dumps(answers), 200, {'content-type': 'application/json'}
+	c.execute("SELECT question, answer FROM questions")
+	rows = c.fetchall()
+	answer_list = []
+	for row in rows:
+		d = collections.OrderedDict()
+		d[row[0]] = row[1]
+		answer_list.append(d)
+	 
+	answers = json.dumps(answer_list)
+	return answers, 200, {'content-type': 'application/json'}
 
 if __name__ == "__main__":
     app.run()
