@@ -16,18 +16,28 @@ app.debug = True
 def hello():
     return "Hello World! Welcome to my first Python Flask app!"
  
-@app.route('/display') 
-def display():
-    return render_template('display.html')
+@app.route('/questions') 
+def questions():
+    return render_template('questions.html')
     
 @app.route('/postAnswer', methods=['POST'])
 def postAnswer():
-	question =  request.form['question'];
-	text = request.form['text'];
-	answer = request.form['answer'];
-	response = {'status':'OK','question':question,'text':text,'answer':answer};
-	c.execute("INSERT INTO questions (question, text, answer) VALUES ('%s', '%s', '%s');" %(question, text, answer)); 
-	return json.dumps(response), 200, {'content-type': 'application/json'};
+	question =  request.form['question']
+	text = request.form['text']
+	answer = request.form['answer']
+	response = {'status':'OK','question':question,'text':text,'answer':answer}
+	c.execute("INSERT INTO questions (question, text, answer) VALUES ('%s', '%s', '%s');" %(question, text, answer))
+	return json.dumps(response), 200, {'content-type': 'application/json'}
+	  
+@app.route('/displayResults') 
+def displayResults():
+    return render_template('displayResults.html')
+    
+@app.route('/getData', methods=['GET'])
+def getData():
+	c.execute("SELECT answer FROM questions WHERE question='question-1'")
+	answers = c.fetchall()
+	return json.dumps(answers), 200, {'content-type': 'application/json'}
 
 if __name__ == "__main__":
     app.run()
