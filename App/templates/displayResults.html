@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+ <html lang="en">
+ 
+ <head>
+     <meta charset="utf-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <meta name="description" content="">
+     <meta name="author" content="">
+     <link rel="icon" href="../../favicon.ico">
+ 
+     <title>Display Answers</title>
+ 
+     <!-- Bootstrap core CSS -->
+     <link href="static/css/bootstrap.min.css" rel="stylesheet">
+ 
+     <!-- Custom styles for this template -->
+     <link href="static/css/signin.css" rel="stylesheet">
+ 
+     <script src="static/js/jquery-3.2.1.min.js"> </script>
+ 
+     <script> 
+			var graphData = [];
+			function getCount(arr, question, answer) {
+				var count = 0;
+				for (var i = 0; i < arr.length; i++) {
+					if (arr[i][question] == answer) {
+						count++;
+					}
+				}
+				return count;
+			}
+
+			function getPlotData() {
+				$.get('/getData')
+					.done(function(response) {
+						console.log(response);
+						
+						console.log(getCount(response, 'question1', 'yes'));
+						console.log(getCount(response, 'question1', 'no'));
+						console.log(getCount(response, 'question2', 'yes'));
+						console.log(getCount(response, 'question2', 'no'));
+						
+						graphData = [getCount(response, 'question1', 'yes'), getCount(response, 'question1', 'no'),getCount(response, 'question2', 'yes'), getCount(response, 'question2', 'no')];
+						loadPlot();
+						//setTimeout(getPlotData(), 3000);
+					})
+					.fail(function(error) {
+						console.log(error);
+					});
+			}
+		 
+		 
+			$( document ).ready(function() {
+				getPlotData();
+			});
+			
+			
+			
+			
+		</script>
+ 
+ </head>
+ 
+ <body>
+ 
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<div id="example-plot-div" ></div>
+
+<script>
+       function loadPlot(){
+                 var data = [{
+                                x: ['Q1 yes', 'Q1 no','Q2 yes', 'Q2 no'],
+                                y: graphData,
+                                  type: 'bar'
+                             }];
+                 Plotly.newPlot('example-plot-div', data);
+       }
+
+       if (document.readyState === "complete") { loadPlot()};
+
+       window.onload = function(){loadPlot()};
+</script>
+
+<div align="center">''Note:'' You require an internet connection to view the graph.</div>
+   
+ </body>
+ 
+ </html>
