@@ -25,8 +25,7 @@
 					var answer_in = $('.question1:checked').val();
 					var text_in = $('#question1text').text();
 					var question_in = $('.question1').attr('name');
-					$.post('/postAnswer',
-						{answer: answer_in, text : text_in, question: question_in })
+					$.post('/postAnswer',{answer: answer_in, text : text_in, question: question_in })
 						.done(function(response) {
 							console.log(response);
 						})
