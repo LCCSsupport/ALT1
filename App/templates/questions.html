@@ -24,7 +24,7 @@
 				$('button').click(function() {
 					var answer_in = $('.question1:checked').val();
 					var text_in = $('#question1text').text();
-					var question_in = $('.question1').attr('name');
+					var question_in = $('#question1').attr('value');
 					$.post('/postAnswer',{answer: answer_in, text : text_in, question: question_in })
 						.done(function(response) {
 							console.log(response);
@@ -44,10 +44,12 @@
 
 		<h2>Sample Question</h2>
 		
-		<form action="/query" method="post" role="form">
+		<form action="/postAnswer" method="post" role="form">
 			<label name="question1text" id="question1text">Can you answers this?</label>
-			<input type="radio" name="question1" value="yes" class="form-control question1" > Yes<br>
-			<input type="radio" name="question1" value="no" class="form-control question1" > No<br>
+			<input type="hidden" name="text" value="Can you answers this?">
+			<input type="hidden" name="question" value="question1" id="question1"><br>
+			<input type="radio" name="answer" value="yes" class="form-control question1" > Yes<br>
+			<input type="radio" name="answer" value="no" class="form-control question1" > No<br>
 			<button class="btn btn-lg btn-primary btn-block" type="button">Submit</button>
 		</form>
       
