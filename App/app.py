@@ -4,7 +4,7 @@ import config
 import collections
 
 conn = pymysql.connect(
-    db='example',
+    db='data',
     user=config.username,
     passwd=config.password,
     host='localhost',
